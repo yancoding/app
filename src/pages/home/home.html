@@ -1,17 +1,80 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <!-- <ion-title>主页</ion-title> -->
+    <ion-segment [(ngModel)]="home">
+      <ion-segment-button *ngFor="let item of data" [value]="item.id">{{item.title}}</ion-segment-button>
+    </ion-segment>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+<ion-content>
+  <!-- 上拉刷新 -->
+  <ion-refresher (ionRefresh)="doRefresh(home,$event)"
+  pullMax="400">
+    <ion-refresher-content
+    inactiveText="..."
+    pullingIcon="arrow-dropdown"
+    pullingText="下拉刷新"
+    refreshingSpinner="circles"
+    refreshingText="刷新..."
+    ></ion-refresher-content>
+  </ion-refresher>
+  <!-- 主页内容 -->
+  <div *ngIf="data[home].data == undefined" style="text-align: center">
+    <ion-note>暂无数据</ion-note>
+  </div>
+  <div [(ngSwitch)]="home">
+    <div *ngFor="let case of data">
+      <div *ngSwitchCase="case.id">
+        <ion-card *ngFor="let item of case.data">
+          <ion-item>
+            <ion-avatar item-start>
+              <img src="{{item.profile_image}}" alt="">
+            </ion-avatar>
+            <div>{{item.name}}</div>
+            <ion-note>
+              {{item.passtime}}
+            </ion-note>
+          </ion-item>
+          <ion-item>
+            <div text-wrap>{{item.text}}</div>
+          </ion-item>
+          <ion-item *ngIf="item.cdn_img!=null" class="img-container" (click)="presentModal(item.cdn_img)">
+            <img src="{{item.cdn_img}}" alt="">
+            <ion-fab right bottom *ngIf="item.height>240">
+              <button ion-fab mini round>长图</button>
+            </ion-fab>
+          </ion-item>
+          <ion-row>
+            <ion-col>
+              <button ion-button clear color="dark">
+                <ion-icon name="share-alt"></ion-icon>
+                {{item.repost}}
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button clear color="dark">
+                <ion-icon name="text"></ion-icon>
+                {{item.comment}}
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button clear color="dark">
+                <ion-icon name="thumbs-up"></ion-icon>
+                {{item.love}}
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+      </div>
+        
+      
+    </div>
+    
+  </div>
+      
+  <!-- 下拉加载更多 -->
+  <ion-infinite-scroll (ionInfinite)="doInfinite(home,$event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

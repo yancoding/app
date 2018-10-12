@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      消息
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<ion-list>
+    <ion-item-sliding *ngFor="let item of message; let i = index">
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="{{item.profile_image}}" alt="">
+        </ion-avatar>
+        <div>
+          <h2>{{item.name}}</h2>
+          <p>{{item.message}}</p>
+        </div>
+        <div item-end>
+          <p>{{item.time}}</p>
+          <ion-badge>{{item.total}}</ion-badge>
+        </div>
+      </ion-item>
+      <ion-item-options slide="right">
+        <!-- <button ion-button>置顶</button> -->
+        <button ion-button color="danger" (click)="delete(i)">删除</button>
+      </ion-item-options>
+    </ion-item-sliding>
+	</ion-list>
+
+</ion-content>

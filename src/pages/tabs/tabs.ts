@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-import { AboutPage } from '../about/about';
-import { ContactPage } from '../contact/contact';
+import { MessagePage } from '../message/message';
+import { MinePage } from '../mine/mine';
 import { HomePage } from '../home/home';
 
 @Component({
@@ -9,11 +9,25 @@ import { HomePage } from '../home/home';
 })
 export class TabsPage {
 
-  tab1Root = HomePage;
-  tab2Root = AboutPage;
-  tab3Root = ContactPage;
+  tabRoots: Object[];
 
   constructor() {
-
+    this.tabRoots = [
+      {
+        root: HomePage,
+        tabTitle: "主页",
+        tabIcon: "home"
+      },
+      {
+        root: MessagePage,
+        tabTitle: "消息",
+        tabIcon: "notifications"
+      },
+      {
+        root: MinePage,
+        tabTitle: "我的",
+        tabIcon: "person"
+      },
+    ]
   }
 }
